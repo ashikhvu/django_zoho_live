@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    .dropdown-item{
+        color: rgb(157, 157, 157);
+    }
+    .dropdown-item:hover{
+        color: white;
+    }
+    .ts_sm{
+        text-shadow: 3px 3px 3px black;
+    }
+    .ts_sm_sm{
+        text-shadow: 2px 2px 2px black;
+    }
+    .ts_sm_sm_blue{
+        text-shadow: 2px 2px 2px rgb(0, 14, 92);
+    }
+    .bs_sm{
+        box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.171);
+    }
+    .bs_bg{
+        box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.404);
+    }
+    .customize_btn{
+        color: rgb(135, 135, 255);
+        cursor: pointer;
+        transition: all 0.1s linear;    
+    }
+    .customize_btn:hover{
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        transition: all 0.1s linear;
+    }
+    .text_hover1:hover{
+        color: white;
+    }
+    .text_hover1{
+        color: gray;
+    }
+</style>
+
+<div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.075);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);">
+    <p></p>
+    <div class="position-relative">
+        <div style="margin-bottom: -1rem;margin-right: -0.95rem;" class="position-absolute end-0 bottom-100">
+            <div class="col-sm-12 col-xl-1">
+                <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-sm-12 col-xl-2 border">
+            <button class="btn btn-outline-light w-100  w- p-2 text-start bs_sm" data-bs-toggle="dropdown">
+                <div class="row">
+                    <div class="col-10">
+                        <span class="bi bi-calendar2-date"></span> <span class="ps-1">This Month</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="dropdown-toggle"></span>
+                    </div>
+                </div>
+                
+                
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item ps-4" href="">Today</a></li>
+                <li><a class="dropdown-item ps-4" href="">This Week</a></li>
+                <li><a class="dropdown-item ps-4" href="">This Month</a></li>
+                <li><a class="dropdown-item ps-4" href="">This Quarter</a></li>
+                <li><a class="dropdown-item ps-4" href="">This Year</a></li>
+                <li><a class="dropdown-item ps-4" href="">Yesterday</a></li>
+                <li><a class="dropdown-item ps-4" href="">Previous Week</a></li>
+                <li><a class="dropdown-item ps-4" href="">Previous Month</a></li>
+                <li><a class="dropdown-item ps-4" href="">Previous Quarter</a></li>
+                <li><a class="dropdown-item ps-4" href="">Previous Year</a></li>
+                <li><a class="dropdown-item ps-4" href="">Custom</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-12 col-xl-2 p-1 border">
+            <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> Customize Report</span>
+        </div>
+        <div class="col-sm-12 col-xl-4 border">
+            
+        </div>
+        <div class="col-sm-12 col-xl-2 border">
+            <button class="btn btn-outline-primary bg-gradient p-2 bs_sm"><span class="bi bi-clock"></span> Scheduled Report</button>
+        </div>
+        <div class="col-sm-12 col-xl-1 border">
+            <div class="d-flex">
+                <button class="btn btn-outline-light ps-3 pe-3 pt-2 pb-2 bs_sm"><span class="bi bi-printer"></span> </button>
+                <button class="dropdown-toggle btn btn-outline-light  p-2 bs_sm"></button>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-1 border">
+            <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm">Export As</button>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="text-center">
+        <h3 class="fw-light ts_sm">ZOHO BOOKS</h4>
+        <h2 class="fw- ts_sm">Payments Received</h1>
+        <p class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</p>
+    </div>
+    <br>
+    <div style="overflow: hidden;">
+        <div style="overflow-x: scroll;">
+            <table class="table table-striped table-hover table-dark table-bordered">
+                <thead>
+                    <th class="text-light fw-light">PAYMENT NUMBER</th>
+                    <th class="text-light fw-light">CUSTOMER NAME</th>
+                    <th class="text-light fw-light">DATE</th>
+                    <th class="text-light fw-light">REFERENCE NUMBER</th>
+                    <th class="text-light fw-light">PAYMENT MODE</th>
+                    <th class="text-light fw-light">NOTES</th>
+                    <th class="text-light fw-light">INVOICE#</th>
+                    <th class="text-light fw-light">AMOUNT (FCY)</th>
+                    <th class="text-light fw-light">UNUSED AMOUNT (FCY)</th>
+                    <th class="text-light fw-light">AMOUNT (BCY)</th>
+                    <th class="text-light fw-light">UNUSED AMOUNT (BCY)</th>
+                </thead>
+                {% for i in data %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
