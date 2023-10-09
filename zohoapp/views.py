@@ -30,6 +30,13 @@ from django.db.models import Sum
 from itertools import groupby
 from django.core import serializers
 from django.shortcuts import get_object_or_404, redirect
+#___________________________Ashikh V U (start)__________________________________
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib.pagesizes import A4
+#___________________________Ashikh V U (end)__________________________________
 
 
 def index(request):
@@ -15492,6 +15499,43 @@ def customize_report_bss3(request):
 
 def payment_received(request):
     todays_date = date.today().strftime('%d  %B  %Y')
-    return render(request,'payment_reciedved.html',{'todays_date':todays_date})
+    customer_details = customer.objects.all()
+    return render(request,'payment_reciedved.html',{'todays_date':todays_date,
+                                                    'customer':customer_details})
 
+def generate_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer,pagesize=A4)
+
+    data = {
+        "Posts":[{'title':'python','views':500},{'title':'javascript','views':500}]
+    }
+
+    p.setFont("Helvetica",11,leading=None)
+    p.setFillColorRGB(0.256,0.4541,0.1245)
+    p.drawString(260,800,"my website")
+    p.line(0,780,1000,780)
+    p.line(0,778,1000,778)
+    x1 = 20
+    y1 = 750
+
+    for k,v in data.items():
+        p.setFont("Helvetica",11,leading=None)
+        p.drawString(x1,y1-12,f"{k}")
+        for value in v:
+            for key,val in value.items():
+                p.setFont("Helvetica",8,leading=None)
+                p.drawString(x1,y1-20,f"{key}-{val}")
+                y1 = y1-60
+    p.setTitle('ashikh')
+    p.showPage()
+    p.save()
+
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response 
 #___________________________Ashikh V U (end)__________________________________

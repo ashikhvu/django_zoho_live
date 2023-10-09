@@ -756,6 +756,7 @@ urlpatterns = [
     
     #-----------------------------Ashikh V U payment_received(start)-------------------------
     path('payment_received',views.payment_received,name='payment_received'),
+    path('generate_pdf/', views.generate_pdf, name='generate_pdf'),
     #-----------------------------Ashikh V U payment_received(start)-------------------------
     
     

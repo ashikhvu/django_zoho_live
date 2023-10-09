@@ -18,11 +18,14 @@
     .ts_sm_sm{
         text-shadow: 2px 2px 2px black;
     }
+    .ts_sm_sm_sm{
+        text-shadow: 1px 1px 1px black;
+    }
     .ts_sm_sm_blue{
         text-shadow: 2px 2px 2px rgb(0, 14, 92);
     }
     .bs_sm{
-        box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.171);
+        box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.075);
     }
     .bs_bg{
         box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.404);
@@ -43,11 +46,53 @@
     .text_hover1{
         color: gray;
     }
+    .sched_btn{
+        text-shadow: 1px 1px 1px black;
+    }
+    .sched_btn:hover{
+        text-shadow: inherit;
+    }
+    @media print{
+        table{
+            page-break-after: always;
+            page-break-before: always;
+        }
+        table { page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto }
+        td    { page-break-inside:avoid; page-break-after:auto }
+        thead { display:table-header-group }
+        tfoot { display:table-footer-group }
+        body,html{
+            color: black;
+            background: white;
+        }
+        .bs_bg,.rem_ts_bs,.ts_sm,.ts_sm_sm{
+            box-shadow: none;
+            color: black;
+            text-shadow: none;
+        }
+        .visiblity_hide,nav,.navbar-nav-right,.navbar,.cls-btn{
+            display: none;
+            text-shadow: none;
+        }
+        .bg-dark,th.td{
+            background-color: white;
+            color: black;
+        }
+        .print_text{
+            color: black;
+        }
+        table{
+            border: 1px solid black;
+            width: 100%;
+            page-break-inside: auto;
+        }
+    }
 </style>
 
-<div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.075);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);">
+<div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.055);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);backdrop-filter: blur(10px);">
     <p></p>
-    <div class="position-relative">
+    <div class="position-relative cls-btn">
         <div style="margin-bottom: -1rem;margin-right: -0.95rem;" class="position-absolute end-0 bottom-100">
             <div class="col-sm-12 col-xl-1">
                 <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
@@ -55,82 +100,127 @@
         </div>
     </div>
     <p></p>
-    <div class="row">
-        <div class="col-sm-12 col-xl-2 border">
-            <button class="btn btn-outline-light w-100  w- p-2 text-start bs_sm" data-bs-toggle="dropdown">
-                <div class="row">
-                    <div class="col-10">
-                        <span class="bi bi-calendar2-date"></span> <span class="ps-1">This Month</span>
-                    </div>
-                    <div class="col-2">
-                        <span class="dropdown-toggle"></span>
-                    </div>
+    <div class="row visiblity_hide">
+        <div class="col-sm-12 col-xl-2 ">
+            <div class="position-relative">
+                <div class="position-absolute start-0 top-0" style="margin-top: 0.3rem;margin-left: 0.5rem;">
+                    <span class="bi bi-calendar2-date" ></span>
                 </div>
-                
-                
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item ps-4" href="">Today</a></li>
-                <li><a class="dropdown-item ps-4" href="">This Week</a></li>
-                <li><a class="dropdown-item ps-4" href="">This Month</a></li>
-                <li><a class="dropdown-item ps-4" href="">This Quarter</a></li>
-                <li><a class="dropdown-item ps-4" href="">This Year</a></li>
-                <li><a class="dropdown-item ps-4" href="">Yesterday</a></li>
-                <li><a class="dropdown-item ps-4" href="">Previous Week</a></li>
-                <li><a class="dropdown-item ps-4" href="">Previous Month</a></li>
-                <li><a class="dropdown-item ps-4" href="">Previous Quarter</a></li>
-                <li><a class="dropdown-item ps-4" href="">Previous Year</a></li>
-                <li><a class="dropdown-item ps-4" href="">Custom</a></li>
-            </ul>
+            </div>
+            <select class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4">
+                <option value="Today"><a href="">Today</a></option>
+                <option value="This Week"><a href="">This Week</a></option>
+                <option value="This Month"><a href="">This Month</a></option>
+                <option value="This Quarter"><a href="">This Quarter</a></option>
+                <option value="This Year"><a href="">This Year</a></option>
+                <option value="Yesterday"><a href="">Yesterday</a></option>
+                <option value="Previous Week"><a href="">Previous Week</a></option>
+                <option value="Previous Month"><a href="">Previous Month</a></option>
+                <option value="Previous Quarter"><a href="">Previous Quarter</a></option>
+                <option value="Previous Year"><a href="">Previous Year</a></option>
+                <option value="Custom"><a href="">Custom</a></option>
+            </select>
         </div>
-        <div class="col-sm-12 col-xl-2 p-1 border">
+        <div class="col-sm-12 col-xl-2 p-1 ">
             <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> Customize Report</span>
         </div>
-        <div class="col-sm-12 col-xl-4 border">
+        <div class="col-sm-12 col-xl-4 ">
             
         </div>
-        <div class="col-sm-12 col-xl-2 border">
-            <button class="btn btn-outline-primary bg-gradient p-2 bs_sm"><span class="bi bi-clock"></span> Scheduled Report</button>
+        <div class="col-sm-12 col-xl-2 ">
+            <button class="btn btn-outline-primary bg-gradient p-2 bs_sm sched_btn"><span class="bi bi-clock sched_btn"></span> Scheduled Report</button>
         </div>
-        <div class="col-sm-12 col-xl-1 border">
+        <div class="col-sm-12 col-xl-1">
             <div class="d-flex">
-                <button class="btn btn-outline-light ps-3 pe-3 pt-2 pb-2 bs_sm"><span class="bi bi-printer"></span> </button>
+                <button id="print_btn" class="btn btn-outline-light ps-3 pe-3 pt-2 pb-2 bs_sm"><span class="bi bi-printer"></span> </button>
                 <button class="dropdown-toggle btn btn-outline-light  p-2 bs_sm"></button>
             </div>
         </div>
-        <div class="col-sm-12 col-xl-1 border">
-            <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm">Export As</button>
+        <div class="col-sm-12 col-xl-1 ">
+            <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm" data-bs-toggle="dropdown">Export As</button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'generate_pdf' %}">Export to pdf</a></li>
+                <li><a class="dropdown-item" href="">Export to Excell</a></li>
+            </ul>
         </div>
     </div>
     <hr>
+    <div id="printable_content">
+        <br>
+        <div class="text-center">
+            <h3 class="fw-light ts_sm print_text">ZOHO BOOKS</h4>
+            <h2 class="fw- ts_sm">Payments Received</h1>
+            <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5>
+        </div>
     <br>
-    <div class="text-center">
-        <h3 class="fw-light ts_sm">ZOHO BOOKS</h4>
-        <h2 class="fw- ts_sm">Payments Received</h1>
-        <p class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</p>
-    </div>
-    <br>
-    <div style="overflow: hidden;">
-        <div style="overflow-x: scroll;">
-            <table class="table table-striped table-hover table-dark table-bordered">
-                <thead>
-                    <th class="text-light fw-light">PAYMENT NUMBER</th>
-                    <th class="text-light fw-light">CUSTOMER NAME</th>
-                    <th class="text-light fw-light">DATE</th>
-                    <th class="text-light fw-light">REFERENCE NUMBER</th>
-                    <th class="text-light fw-light">PAYMENT MODE</th>
-                    <th class="text-light fw-light">NOTES</th>
-                    <th class="text-light fw-light">INVOICE#</th>
-                    <th class="text-light fw-light">AMOUNT (FCY)</th>
-                    <th class="text-light fw-light">UNUSED AMOUNT (FCY)</th>
-                    <th class="text-light fw-light">AMOUNT (BCY)</th>
-                    <th class="text-light fw-light">UNUSED AMOUNT (BCY)</th>
-                </thead>
-                {% for i in data %}
-                {% endfor %}
-            </table>
+        <div class="over" style="overflow: hidden;">
+            <div class="over" style="overflow-x: scroll;">
+                <table style="width:100%" class="table table-striped table-hover table-dark">
+                    <thead>
+                        <th id="paynum_" class="text-light fw-bold print__text">PAYMENT NUMBER</th>
+                        <th id="name_" class="text-light fw-bold print__text">CUSTOMER NAME</th>
+                        <th id="date_" class="text-light fw-bold print__text">DATE</th>
+                        <th id="refnum_" class="text-light fw-bold print__text">REFERENCE NUMBER</th>
+                        <th id="paymod_" class="text-light fw-bold print__text">PAYMENT MODE</th>
+                        <th id="note_" class="text-light fw-bold print__text">NOTES</th>
+                        <th id="invc_" class="text-light fw-bold print__text">INVOICE#</th>
+                        <th id="fcy_" class="text-light fw-bold print__text">AMOUNT (FCY)</th>
+                        <th id="ufcy_" class="text-light fw-bold print__text">UNUSED AMOUNT (FCY)</th>
+                        <th id="bcy_" class="text-light fw-bold print__text">AMOUNT (BCY)</th>
+                        <th id="ubcy_" class="text-light fw-bold print__text">UNUSED AMOUNT (BCY)</th> 
+                    </thead>
+                    <tbody>
+                        {% for i in customer %}
+                            <tr>
+                                <td>---------</td>
+                                <td>{{ i.user.first_name|upper }} {{ i.user.last_name|upper }}</td>
+                                <td>-----</td>
+                                <td>---------</td>
+                                <td>---------</td>
+                                <td>------</td>
+                                <td>--------</td>
+                                <td>----</td>
+                                <td>------</td>
+                                <td>----</td>
+                                <td>------</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('#print_btn').click(function(){
+            $('#paynum_').text('PAY-NUM')
+            $('#name_').text('FULL NAME')
+            $('#date_').text('DATE')
+            $('#refnum_').text('REF-NUM')
+            $('#paymod_').text('PAY-MOD')
+            $('#note_').text('NOTE')
+            $('#invc_').text('INVOICE')
+            $('#fcy_').text('FCY')
+            $('#ufcy_').text('U-FCY')
+            $('#bcy_').text('BCY')
+            $('#ubcy_').text('U-BCY')
+            $('.over').css({'overflow':'hidden'})
+            $('body').css({'color':'black'})
+            $('html').css({'color':'black','font-size': '11px'})
+            $('.table').removeClass('table-striped table-hover table-dark')
+            $('.table').addClass('table-bordered border-dark bg-light')
+            $('.print__text').removeClass('text-light')
+            $('.print__text').addClass('text-dark')
+            var pc = $('#printable_content').html()
+            var backup = document.body.innerHTML
+            document.body.innerHTML = pc
+            window.print()
+            document.body.innerHTML = backup
+            window.location.href = ''
+        })
+    })
+</script>
 
 {% endblock %}

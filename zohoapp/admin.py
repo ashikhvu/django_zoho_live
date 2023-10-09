@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AddItem,Purchase,Sales,Unit,Journal,JournalEntry,JournalComment
+from .models import AddItem,Purchase,Sales,Unit,Journal,JournalEntry,JournalComment, customer
 
 # Register your models here.
 admin.site.register(AddItem)
@@ -25,3 +25,7 @@ admin.site.register(JournalEntry)
 @admin.register(JournalComment)
 class JournalCommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'journal', 'date_time', 'text')
+
+#ashikhvu (start)---------------------------------------------------
+admin.site.register(customer)
+#ashikhvu (end)---------------------------------------------------
