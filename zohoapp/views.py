@@ -36,6 +36,10 @@ from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle,Paragraph
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+from django.template.response import TemplateResponse
 #___________________________Ashikh V U (end)__________________________________
 
 
@@ -15497,45 +15501,179 @@ def customize_report_bss3(request):
 
 #___________________________Ashikh V U (start)__________________________________
 
+@login_required(login_url='login')
 def payment_received(request):
     todays_date = date.today().strftime('%d  %B  %Y')
     customer_details = customer.objects.all()
     return render(request,'payment_reciedved.html',{'todays_date':todays_date,
                                                     'customer':customer_details})
 
+@login_required(login_url='login')
 def generate_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
 
     buffer = BytesIO()
-    p = canvas.Canvas(buffer,pagesize=A4)
+    # p = canvas.Canvas(buffer,pagesize=A4)
 
-    data = {
-        "Posts":[{'title':'python','views':500},{'title':'javascript','views':500}]
-    }
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
 
-    p.setFont("Helvetica",11,leading=None)
-    p.setFillColorRGB(0.256,0.4541,0.1245)
-    p.drawString(260,800,"my website")
-    p.line(0,780,1000,780)
-    p.line(0,778,1000,778)
-    x1 = 20
-    y1 = 750
+    customers = customer.objects.all()
+    d = datetime.now().date().strftime('%B %d %Y')
 
-    for k,v in data.items():
-        p.setFont("Helvetica",11,leading=None)
-        p.drawString(x1,y1-12,f"{k}")
-        for value in v:
-            for key,val in value.items():
-                p.setFont("Helvetica",8,leading=None)
-                p.drawString(x1,y1-20,f"{key}-{val}")
-                y1 = y1-60
-    p.setTitle('ashikh')
-    p.showPage()
-    p.save()
+    data = [["PAY-NUM", "FULL NAME", "DATE","REF-NUM","PAY-MOD","NOTE","INVOICE","FCY","U-FCY","BCY","U-BCY"]]
 
+    heading_style = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=16,
+        fontName='Helvetica-Bold',
+    )
+    heading_style1 = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=10,
+        fontName='Helvetica',
+    )
+    heading_style3 = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=15,
+        fontName='Helvetica',
+    )
+    heading3 = Paragraph("Zoho Books", heading_style3)
+    heading = Paragraph("Payment Received", heading_style)
+    heading1 = Paragraph(f"{d}", heading_style1)
+    elements.append(heading3)
+    elements.append(heading)
+    elements.append(heading1)
+
+    for i in customers:
+        data.append(["---------",i.user.first_name +" "+ i.user.last_name,"-----","---------","---------","------","--------","----","------","----","------"])
+
+    table = Table(data)
+
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ])
+
+    table.setStyle(style)
+    elements.append(table)
+    doc.build(elements)
     pdf = buffer.getvalue()
     buffer.close()
     response.write(pdf)
     return response 
+
+@login_required(login_url='login')
+def get_date(request):
+    select = request.GET.get('select_')
+    todays_date = datetime.now()
+    todays_date_formated = datetime.now().strftime("%d %B %Y")
+    if select == 'Today':
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {todays_date_formated} )</h5>")
+    elif select == 'This Week':
+        new_date = todays_date - timedelta(days=7)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Month':
+        new_date = todays_date - timedelta(days=30)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Quarter':
+        new_date = todays_date - timedelta(days=90)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Year':
+        new_date = todays_date - timedelta(days=365)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'Yesterday':
+        new_date = todays_date - timedelta(days=1)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} )</h5>")
+    elif select == 'Previous Week':
+        new_date = todays_date - timedelta(days=7)
+        new_new_date = todays_date - timedelta(days=14)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format})</h5>")
+    elif select == 'Previous Month':
+        new_date = todays_date - timedelta(days=30)
+        new_new_date = todays_date - timedelta(days=60)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Previous Quarter':
+        new_date = todays_date - timedelta(days=90)
+        new_new_date = todays_date - timedelta(days=180)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Previous Year':
+        new_date = todays_date - timedelta(days=365)
+        new_new_date = todays_date - timedelta(days=730)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Custom':
+        new_date = todays_date - timedelta(days=7)
+        new_new_date = todays_date - timedelta(days=14)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    
+@login_required(login_url='login')
+def payment_reciedved_customize(request):
+    return render(request,'payment_reciedved_customize.html')
+
+
+@login_required(login_url='login')
+def payment_reciedved_customize_sub(request,new_id):
+    return TemplateResponse(request,'filters/payment_reciedved_customize_sub.html',{'new_id':new_id})
+
+# @login_required(login_url='login')
+# def advanced_filters(request):
+#     return TemplateResponse(request,'filters/advanced_filters.html')
+
+@login_required(login_url='login')
+def select_comparator(request,new_id):
+    print(f'\n\n{new_id}\n\n')
+    selected = request.GET.get('select_'+new_id)
+    shit = 'select_'+new_id
+    print(f'\n\n{shit}  {selected}\n\n')
+    if selected == 'Payment Number' or selected == 'Customer Name' or selected == 'Reference Number' or selected == 'Invoice#' or selected == 'Unused Amount (BCY)':
+        return TemplateResponse(request,'filters/select_comparator.html',{'selected_option':selected,'new_id':new_id})
+    elif selected == 'Date' or selected == 'Applied Date' or selected == 'Refund Amount (BCY)' or selected == 'Amount (BCY)':
+        return TemplateResponse(request,'filters/select_comparator_date.html',{'selected_option':selected,'new_id':new_id})
+    else:
+        return TemplateResponse(request,'filters/select_comparator_paymod.html',{'selected_option':selected,'new_id':new_id})
+
+@login_required(login_url='login')
+def add_note_or_date(request,selected_option,new_id):
+    if selected_option == 'Payment Number' or selected_option == 'Customer Name' or selected_option == 'Reference Number' or selected_option == 'Invoice#' or selected_option == 'Unused Amount (BCY)':
+        return TemplateResponse(request,'filters/add_note_or_date_input.html')
+    elif selected_option == 'Date' or selected_option == 'Applied Date' or selected_option == 'Refund Amount (BCY)' or selected_option == 'Amount (BCY)':
+        return TemplateResponse(request,'filters/add_note_or_date_date.html')
+    else:
+        return TemplateResponse(request,'filters/add_note_or_date_paymod.html')
+
+@login_required(login_url='login')
+def empty_filter(request):
+    return TemplateResponse(request,'filters/empty_filter.html')
+
+@login_required(login_url='login')
+def payment_reciedved_customize_show(request):
+    return render(request,'payment_reciedved_customize_show.html')
+
 #___________________________Ashikh V U (end)__________________________________

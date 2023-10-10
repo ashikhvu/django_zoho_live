@@ -4,6 +4,8 @@
 
 {% block content %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<script src="https://unpkg.com/htmx.org@1.6.0/dist/htmx.js"></script>
+
 
 <style>
     .dropdown-item{
@@ -107,7 +109,11 @@
                     <span class="bi bi-calendar2-date" ></span>
                 </div>
             </div>
-            <select class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4">
+            <select class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4" name="select_"
+            hx-get ="{% url 'get_date' %}"
+            hx-target="#date_here_"
+            hx-trigger="change"
+            >
                 <option value="Today"><a href="">Today</a></option>
                 <option value="This Week"><a href="">This Week</a></option>
                 <option value="This Month"><a href="">This Month</a></option>
@@ -122,7 +128,7 @@
             </select>
         </div>
         <div class="col-sm-12 col-xl-2 p-1 ">
-            <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> Customize Report</span>
+            <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> <a href="{% url 'payment_reciedved_customize' %}" class="customize_btn text-decoration-none ts_sm_sm_blue">Customize Report</a></span>
         </div>
         <div class="col-sm-12 col-xl-4 ">
             
@@ -140,7 +146,7 @@
             <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm" data-bs-toggle="dropdown">Export As</button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'generate_pdf' %}">Export to pdf</a></li>
-                <li><a class="dropdown-item" href="">Export to Excell</a></li>
+                <li><a class="dropdown-item" type="button" onclick="exportToExcel()">Export to Excell</a></li>
             </ul>
         </div>
     </div>
@@ -150,7 +156,8 @@
         <div class="text-center">
             <h3 class="fw-light ts_sm print_text">ZOHO BOOKS</h4>
             <h2 class="fw- ts_sm">Payments Received</h1>
-            <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5>
+            <!-- <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5> -->
+            <div id="date_here_"></div>
         </div>
     <br>
         <div class="over" style="overflow: hidden;">
@@ -221,6 +228,14 @@
             window.location.href = ''
         })
     })
+    function exportToExcel() {
+        var table = document.querySelector('table');
+        var ws = XLSX.utils.table_to_sheet(table);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+        XLSX.writeFile(wb, 'report.xlsx');
+    }
+
 </script>
 
 {% endblock %}
