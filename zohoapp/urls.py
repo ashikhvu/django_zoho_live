@@ -5,7 +5,11 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 from .views import EmailAttachementView
-
+ #-----------------------------Ashikh V U payment_received(start)-------------------------
+from schedule.views import CalendarView
+# from silk.views.request_view import RequestView
+# from silk.views import request_view
+ #-----------------------------Ashikh V U payment_received(start)-------------------------
 urlpatterns = [
     path('', views.index, name='index'),
     path('register', views.register, name='register'),
@@ -765,6 +769,11 @@ urlpatterns = [
     path('add_note_or_date/<str:selected_option>/<str:new_id>',views.add_note_or_date,name='add_note_or_date'),
     path('empty_filter',views.empty_filter,name='empty_filter'),
     path('payment_reciedved_customize_show',views.payment_reciedved_customize_show,name='payment_reciedved_customize_show'),
+    # path('my_calendar',request_view,name='my_calendar'),
+    path('my_calendar',views.my_calendar,name='my_calendar'),
+    path('tax_summary_page',views.tax_summary_page,name='tax_summary_page'),
+    path('generate_pdf1/', views.generate_pdf1, name='generate_pdf1'),
+    path('tax_summary_customize_general/', views.tax_summary_customize_general, name='tax_summary_customize_general'),
     #-----------------------------Ashikh V U payment_received(start)-------------------------
     
     

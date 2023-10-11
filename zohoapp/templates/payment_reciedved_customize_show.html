@@ -158,7 +158,6 @@
                                     <li class="pt-1 pb-1 font_anim"><small>Unused Amount (FCY)</small><span class="position-absolute end-0 add_btn bi bi-plus-circle text-danger"></span></li>
                                     <li class="pt-1 pb-1 font_anim"><small>Amount (BCY)</small><span class="position-absolute end-0 add_btn bi bi-plus-circle text-danger"></span></li>
                                     <li class="pt-1 pb-1 font_anim"><small>Unused Amount (BCY)</small><span class="position-absolute end-0 add_btn bi bi-plus-circle text-danger"></span></li>
-                                    <li class="pt-1 pb-2 font_anim"><small>Payment Number</small><span class="position-absolute end-0 add_btn bi bi-plus-circle text-danger"></span></li>
                                 </ul>
                                 <p></p>
                                 <li class="text-secondary"><a href="">Contacts</a></li>
@@ -193,7 +192,31 @@
                             <ul style="list-style: none;" class="ps-2 position-relative">
                                 <p></p>
                                 <ul  id="add_list_content" style="list-style: none;" class="ps-3">
-                                    
+                                    <li hidden class="pt-2 pb-1 font_anim"><small>Payment Number</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Customer Name</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Date</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Rerence Number</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Payment Mode</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Notes</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Invoice#</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Amount Applied</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Applied Date</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Refund Amount (BCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Refund Amount (FCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Amount (FCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Unused Amount (FCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Amount (BCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Unused Amount (BCY)</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-2 pb-1 font_anim"><small>Company Name</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>First Name</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Last Name</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Website</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Customer Email</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Mobile Phone</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Work Phone</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Department</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-1 font_anim"><small>Designation</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
+                                    <li hidden class="pt-1 pb-2 font_anim"><small>Ownder Name</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>
                                 </ul>
                             </ul>
                         </div>
@@ -214,12 +237,19 @@
 <script>
     $(document).ready(function(){
         $('.add_btn').click(function(){
+            // $('#add_list_content').selectable()
             var lis = $(this).closest('li')
             // alert(lis.html())
             var span_tag = lis.children('small')
-            // alert(span_tag.html())
-            lis.toggle()
-            $('#add_list_content').append('<li class="pt-1 pb-2 font_anim"><small>'+span_tag.html()+'</small><span class="position-absolute end-0 add_btn bi bi-dash-circle text-success"></span></li>')
+            text1=lis.text()
+            var all_list = document.querySelectorAll('li')
+            for(var i=0;i<all_list.length;i++)
+            {
+                if (all_list[i].textContent==text1) 
+                {
+                    all_list[i].hidden = !all_list[i].hidden
+                }
+            }
         })
     })
     $(document).ready(function(){

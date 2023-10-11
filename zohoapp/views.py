@@ -40,6 +40,9 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle,Paragraph
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from django.template.response import TemplateResponse
+import calendar
+from calendar import HTMLCalendar
+from schedule.models import Calendar
 #___________________________Ashikh V U (end)__________________________________
 
 
@@ -15509,6 +15512,118 @@ def payment_received(request):
                                                     'customer':customer_details})
 
 @login_required(login_url='login')
+def get_date(request):
+    select = request.GET.get('select_')
+    todays_date = datetime.now()
+    todays_date_formated = datetime.now().strftime("%d %B %Y")
+    if select == 'Today':
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {todays_date_formated} )</h5>")
+    elif select == 'This Week':
+        new_date = todays_date - timedelta(days=7)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Month':
+        new_date = todays_date - timedelta(days=30)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Quarter':
+        new_date = todays_date - timedelta(days=90)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'This Year':
+        new_date = todays_date - timedelta(days=365)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
+    elif select == 'Yesterday':
+        new_date = todays_date - timedelta(days=1)
+        new_date_format = new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} )</h5>")
+    elif select == 'Previous Week':
+        new_date = todays_date - timedelta(days=7)
+        new_new_date = todays_date - timedelta(days=14)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format})</h5>")
+    elif select == 'Previous Month':
+        new_date = todays_date - timedelta(days=30)
+        new_new_date = todays_date - timedelta(days=60)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Previous Quarter':
+        new_date = todays_date - timedelta(days=90)
+        new_new_date = todays_date - timedelta(days=180)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Previous Year':
+        new_date = todays_date - timedelta(days=365)
+        new_new_date = todays_date - timedelta(days=730)
+        new_date_format = new_date.strftime("%d %B %Y")
+        new_new_date_format = new_new_date.strftime("%d %B %Y")
+        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+    elif select == 'Custom':
+        # new_date = todays_date - timedelta(days=7)
+        # new_new_date = todays_date - timedelta(days=14)
+        # new_date_format = new_date.strftime("%d %B %Y")
+        # new_new_date_format = new_new_date.strftime("%d %B %Y")
+        # return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
+        return TemplateResponse(request,'my_calendar.html')
+
+
+@login_required(login_url='login')
+def my_calendar(request):
+    return TemplateResponse(request,'my_calendar.html')
+    
+@login_required(login_url='login')
+def payment_reciedved_customize(request):
+    return render(request,'payment_reciedved_customize.html')
+
+
+@login_required(login_url='login')
+def payment_reciedved_customize_sub(request,new_id):
+    return TemplateResponse(request,'filters/payment_reciedved_customize_sub.html',{'new_id':new_id})
+
+# @login_required(login_url='login')
+# def advanced_filters(request):
+#     return TemplateResponse(request,'filters/advanced_filters.html')
+
+@login_required(login_url='login')
+def select_comparator(request,new_id):
+    print(f'\n\n{new_id}\n\n')
+    selected = request.GET.get('select_'+new_id)
+    shit = 'select_'+new_id
+    print(f'\n\n{shit}  {selected}\n\n')
+    if selected == 'Payment Number' or selected == 'Customer Name' or selected == 'Reference Number' or selected == 'Invoice#' or selected == 'Unused Amount (BCY)':
+        return TemplateResponse(request,'filters/select_comparator.html',{'selected_option':selected,'new_id':new_id})
+    elif selected == 'Date' or selected == 'Applied Date' or selected == 'Refund Amount (BCY)' or selected == 'Amount (BCY)':
+        return TemplateResponse(request,'filters/select_comparator_date.html',{'selected_option':selected,'new_id':new_id})
+    else:
+        return TemplateResponse(request,'filters/select_comparator_paymod.html',{'selected_option':selected,'new_id':new_id})
+
+@login_required(login_url='login')
+def add_note_or_date(request,selected_option,new_id):
+    if selected_option == 'Payment Number' or selected_option == 'Customer Name' or selected_option == 'Reference Number' or selected_option == 'Invoice#' or selected_option == 'Unused Amount (BCY)':
+        return TemplateResponse(request,'filters/add_note_or_date_input.html')
+    elif selected_option == 'Date' or selected_option == 'Applied Date' or selected_option == 'Refund Amount (BCY)' or selected_option == 'Amount (BCY)':
+        return TemplateResponse(request,'filters/add_note_or_date_date.html')
+    else:
+        return TemplateResponse(request,'filters/add_note_or_date_paymod.html')
+
+@login_required(login_url='login')
+def empty_filter(request):
+    return TemplateResponse(request,'filters/empty_filter.html')
+
+@login_required(login_url='login')
+def payment_reciedved_customize_show(request):
+    return render(request,'payment_reciedved_customize_show.html')
+
+
+@login_required(login_url='login')
+def tax_summary_page(request):
+    return render(request,'tax_summary_page.html')
+
+@login_required(login_url='login')
 def generate_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
@@ -15575,105 +15690,84 @@ def generate_pdf(request):
     response.write(pdf)
     return response 
 
-@login_required(login_url='login')
-def get_date(request):
-    select = request.GET.get('select_')
-    todays_date = datetime.now()
-    todays_date_formated = datetime.now().strftime("%d %B %Y")
-    if select == 'Today':
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {todays_date_formated} )</h5>")
-    elif select == 'This Week':
-        new_date = todays_date - timedelta(days=7)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Month':
-        new_date = todays_date - timedelta(days=30)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Quarter':
-        new_date = todays_date - timedelta(days=90)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Year':
-        new_date = todays_date - timedelta(days=365)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'Yesterday':
-        new_date = todays_date - timedelta(days=1)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} )</h5>")
-    elif select == 'Previous Week':
-        new_date = todays_date - timedelta(days=7)
-        new_new_date = todays_date - timedelta(days=14)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format})</h5>")
-    elif select == 'Previous Month':
-        new_date = todays_date - timedelta(days=30)
-        new_new_date = todays_date - timedelta(days=60)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Previous Quarter':
-        new_date = todays_date - timedelta(days=90)
-        new_new_date = todays_date - timedelta(days=180)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Previous Year':
-        new_date = todays_date - timedelta(days=365)
-        new_new_date = todays_date - timedelta(days=730)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Custom':
-        new_date = todays_date - timedelta(days=7)
-        new_new_date = todays_date - timedelta(days=14)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    
-@login_required(login_url='login')
-def payment_reciedved_customize(request):
-    return render(request,'payment_reciedved_customize.html')
-
 
 @login_required(login_url='login')
-def payment_reciedved_customize_sub(request,new_id):
-    return TemplateResponse(request,'filters/payment_reciedved_customize_sub.html',{'new_id':new_id})
+def generate_pdf1(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
 
-# @login_required(login_url='login')
-# def advanced_filters(request):
-#     return TemplateResponse(request,'filters/advanced_filters.html')
+    buffer = BytesIO()
+    # p = canvas.Canvas(buffer,pagesize=A4)
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+
+    customers = customer.objects.all()
+    d = datetime.now().date().strftime('%B %d %Y')
+
+    data = [["TAX NAME", "TAX PERCENTAGE %", "TAXABLE AMOUNT","TAXAMOUNT"]]
+
+    heading_style = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=16,
+        fontName='Helvetica-Bold',
+    )
+    heading_style1 = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=10,
+        fontName='Helvetica',
+    )
+    heading_style3 = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=15,
+        fontName='Helvetica',
+    )
+    heading_style4 = ParagraphStyle(
+        'Heading1',
+        parent=getSampleStyleSheet()['Heading1'],
+        alignment=1,  # Centered alignment
+        fontSize=8,
+        fontName='Helvetica',
+    )
+    heading3 = Paragraph("Zoho Books", heading_style3)
+    heading = Paragraph("Tax Summary", heading_style)
+    heading4 = Paragraph("Basic : Accural", heading_style4)
+    heading1 = Paragraph(f"( {d} )", heading_style1)
+    elements.append(heading3)
+    elements.append(heading)
+    elements.append(heading4)
+    elements.append(heading1)
+
+    # for i in customers:
+    #     data.append(["---------",i.user.first_name +" "+ i.user.last_name,"-----","---------","---------","------","--------","----","------","----","------"])
+
+    table = Table(data)
+
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ])
+
+    table.setStyle(style)
+    elements.append(table)
+    doc.build(elements)
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response 
 
 @login_required(login_url='login')
-def select_comparator(request,new_id):
-    print(f'\n\n{new_id}\n\n')
-    selected = request.GET.get('select_'+new_id)
-    shit = 'select_'+new_id
-    print(f'\n\n{shit}  {selected}\n\n')
-    if selected == 'Payment Number' or selected == 'Customer Name' or selected == 'Reference Number' or selected == 'Invoice#' or selected == 'Unused Amount (BCY)':
-        return TemplateResponse(request,'filters/select_comparator.html',{'selected_option':selected,'new_id':new_id})
-    elif selected == 'Date' or selected == 'Applied Date' or selected == 'Refund Amount (BCY)' or selected == 'Amount (BCY)':
-        return TemplateResponse(request,'filters/select_comparator_date.html',{'selected_option':selected,'new_id':new_id})
-    else:
-        return TemplateResponse(request,'filters/select_comparator_paymod.html',{'selected_option':selected,'new_id':new_id})
-
-@login_required(login_url='login')
-def add_note_or_date(request,selected_option,new_id):
-    if selected_option == 'Payment Number' or selected_option == 'Customer Name' or selected_option == 'Reference Number' or selected_option == 'Invoice#' or selected_option == 'Unused Amount (BCY)':
-        return TemplateResponse(request,'filters/add_note_or_date_input.html')
-    elif selected_option == 'Date' or selected_option == 'Applied Date' or selected_option == 'Refund Amount (BCY)' or selected_option == 'Amount (BCY)':
-        return TemplateResponse(request,'filters/add_note_or_date_date.html')
-    else:
-        return TemplateResponse(request,'filters/add_note_or_date_paymod.html')
-
-@login_required(login_url='login')
-def empty_filter(request):
-    return TemplateResponse(request,'filters/empty_filter.html')
-
-@login_required(login_url='login')
-def payment_reciedved_customize_show(request):
-    return render(request,'payment_reciedved_customize_show.html')
-
+def tax_summary_customize_general(request):
+    return render(request,'tax_summary_customize_general.html')
 #___________________________Ashikh V U (end)__________________________________
