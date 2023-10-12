@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <script src="https://unpkg.com/htmx.org@1.6.0/dist/htmx.js"></script>
 
+<link rel="stylesheet" href="{% static 'css/my_calendar.css' %}">
+
 
 <style>
     .dropdown-item{
@@ -109,15 +111,87 @@
     </div>
     <p></p>
     <div class="row visiblity_hide">
-        <div class="col-sm-12 col-xl-2 ">
+        <div class="col-sm-12 col-xl-3 ">
             <div class="position-relative">
-                <div class="position-absolute start-0 top-0" style="margin-top: 0.3rem;margin-left: 0.5rem;">
-                    <span class="bi bi-calendar2-date" ></span>
+                <div class="position-absolute start-0 top-0" style="margin-top: 0.1rem;margin-left: 0.5rem;">
+                    <span class="bi bi-calendar2-date text-dark" ></span>
                 </div>
             </div>
-            
-            <select class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4" name="select_"
-            hx-get ="{% url 'get_date' %}"
+            <!-- Date range calendar input -->
+            <div id="reportrange" style="cursor: pointer; color: #010101; background-color: #fff;height: 30px; padding: 2px; border-radius: 2px;">
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>
+            <style>
+                .daterangepicker{
+                    color: black;
+                }
+                .cancelBtn{
+                    color: gray;
+                }
+                .cancelBtn:hover{
+                    color: black;
+                }
+                #reportrange span{
+                    padding-inline-start: 2.2rem;
+                }
+            </style>
+            <script>
+                $(function () {
+                    var start = moment();
+                    var end = moment();
+
+                    function cb(start, end) {
+                        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                        $('#selectedDate').html('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'));
+                        $('#selectedDate_input').val('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'))
+                        localStorage.setItem('selectedDates', JSON.stringify({ start: start, end: end }));
+                    }
+
+                    // Retrieve the previously selected dates from localStorage
+                    var storedDates = localStorage.getItem('selectedDates');
+                    if (storedDates) {
+                        var parsedDates = JSON.parse(storedDates);
+                        start = moment(parsedDates.start);
+                        end = moment(parsedDates.end);
+                    }
+
+
+                    $('#reportrange').daterangepicker({
+                        startDate: start,
+                        endDate: end,
+                        ranges: {
+                            'Today': [moment(), moment()],
+                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                            'This Month': [moment().startOf('month'), moment().endOf('month')],
+                            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                            'Previous Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+                            'Previous Quarter': [
+                                moment().subtract(3, 'months').startOf('quarter'),
+                                moment().subtract(3, 'months').endOf('quarter')
+                            ]
+                        }
+
+
+                    }, cb);
+
+                    cb(start, end);
+                });
+
+
+                $('.reportrange').addClass('ps-5')
+
+
+                $(document).ready(function(){
+                    $('ranges input').click(function(){
+                        alert('asdasd')
+                    })
+                })
+                
+            </script>
+            <!-- <select class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4" name="select_"
+            hx-get ="getthedate"
             hx-target="#date_here_"
             hx-trigger="change"
             >
@@ -132,12 +206,12 @@
                 <option value="Previous Quarter"><a href="">Previous Quarter</a></option>
                 <option value="Previous Year"><a href="">Previous Year</a></option>
                 <option value="Custom"><a type="button" onclick="alert_fn()">Custom</a></option>
-            </select>
+            </select> -->
         </div>
         <div class="col-sm-12 col-xl-2 p-1 ">
             <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> <a href="{% url 'payment_reciedved_customize' %}" class="customize_btn text-decoration-none ts_sm_sm_blue">Customize Report</a></span>
         </div>
-        <div class="col-sm-12 col-xl-4 ">
+        <div class="col-sm-12 col-xl-3 ">
             
         </div>
         <div class="col-sm-12 col-xl-2 ">
@@ -164,7 +238,8 @@
             <h3 class="fw-light ts_sm print_text">ZOHO BOOKS</h4>
             <h2 class="fw- ts_sm">Payments Received</h1>
             <!-- <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5> -->
-            <div id="date_here_"></div>
+            <div class="ts_sm_sm" id="selectedDate"></div>
+            <input id="selectedDate_input" style="opacity: 0;width: 0;height: 0;margin: 0;padding: 0;" class="" type="text" value="asdasdasd" name="selectedDate_input_">
         </div>
     <br>
         <div class="over" style="overflow: hidden;">
@@ -247,5 +322,7 @@
     }
 
 </script>
+
+<script src="{% static 'js/my_calendar.js' %}"></script>
 
 {% endblock %}

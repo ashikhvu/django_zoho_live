@@ -1,43 +1,15 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/my_calendar.css' %}">
+
+<p></p>
 <div class="row">
-    <div class="col-sm-12 col-xl-6 border">
-        <table>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-            </tr>
-        </table>
-    </div>
-    
-    <div class="col-sm-12 col-xl-6 border">
-        <table>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                
-            </tr>
-        </table>
-    </div>
+        <div class="flex">
+            <input id="start_date__" type="date" name="start_date_11">
+            <input id="end_date__" type="date" name="end_date_11">
+        </div>
 </div>
+<p></p>
+<button type="button" class="" onclick="get_date()">Apply</button>
+
+<script src="{% static 'js/my_calendar.js' %}"></script>

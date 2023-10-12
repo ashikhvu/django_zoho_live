@@ -15511,70 +15511,22 @@ def payment_received(request):
     return render(request,'payment_reciedved.html',{'todays_date':todays_date,
                                                     'customer':customer_details})
 
-@login_required(login_url='login')
-def get_date(request):
-    select = request.GET.get('select_')
-    todays_date = datetime.now()
-    todays_date_formated = datetime.now().strftime("%d %B %Y")
-    if select == 'Today':
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {todays_date_formated} )</h5>")
-    elif select == 'This Week':
-        new_date = todays_date - timedelta(days=7)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Month':
-        new_date = todays_date - timedelta(days=30)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Quarter':
-        new_date = todays_date - timedelta(days=90)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'This Year':
-        new_date = todays_date - timedelta(days=365)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} - {todays_date_formated} )</h5>")
-    elif select == 'Yesterday':
-        new_date = todays_date - timedelta(days=1)
-        new_date_format = new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_date_format} )</h5>")
-    elif select == 'Previous Week':
-        new_date = todays_date - timedelta(days=7)
-        new_new_date = todays_date - timedelta(days=14)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format})</h5>")
-    elif select == 'Previous Month':
-        new_date = todays_date - timedelta(days=30)
-        new_new_date = todays_date - timedelta(days=60)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Previous Quarter':
-        new_date = todays_date - timedelta(days=90)
-        new_new_date = todays_date - timedelta(days=180)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Previous Year':
-        new_date = todays_date - timedelta(days=365)
-        new_new_date = todays_date - timedelta(days=730)
-        new_date_format = new_date.strftime("%d %B %Y")
-        new_new_date_format = new_new_date.strftime("%d %B %Y")
-        return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-    elif select == 'Custom':
-        # new_date = todays_date - timedelta(days=7)
-        # new_new_date = todays_date - timedelta(days=14)
-        # new_date_format = new_date.strftime("%d %B %Y")
-        # new_new_date_format = new_new_date.strftime("%d %B %Y")
-        # return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {new_new_date_format} - {new_date_format} )</h5>")
-        return TemplateResponse(request,'my_calendar.html')
-
 
 @login_required(login_url='login')
 def my_calendar(request):
     return TemplateResponse(request,'my_calendar.html')
-    
+
+@login_required(login_url='login')
+def set_custom_date(request):
+    start_date = request.POST.get('start_date_11')
+    end_date = request.POST.get('end_date_11')
+    shit = request.POST.get('shit')
+    asd = request.POST.get('asd')
+    print(f'{start_date}  {end_date}  {asd} {shit}')
+    # start_date = start_date.strftime("%d %B %Y")
+    # end_date = end_date.strftime("%d %B %Y")
+    return HttpResponse(f"<h5 class='ts_sm_sm pt-1'>( {start_date} - {end_date} )</h5>")
+
 @login_required(login_url='login')
 def payment_reciedved_customize(request):
     return render(request,'payment_reciedved_customize.html')
@@ -15583,10 +15535,6 @@ def payment_reciedved_customize(request):
 @login_required(login_url='login')
 def payment_reciedved_customize_sub(request,new_id):
     return TemplateResponse(request,'filters/payment_reciedved_customize_sub.html',{'new_id':new_id})
-
-# @login_required(login_url='login')
-# def advanced_filters(request):
-#     return TemplateResponse(request,'filters/advanced_filters.html')
 
 @login_required(login_url='login')
 def select_comparator(request,new_id):
@@ -15770,4 +15718,5 @@ def generate_pdf1(request):
 @login_required(login_url='login')
 def tax_summary_customize_general(request):
     return render(request,'tax_summary_customize_general.html')
+
 #___________________________Ashikh V U (end)__________________________________

@@ -761,19 +761,17 @@ urlpatterns = [
     #-----------------------------Ashikh V U payment_received(start)-------------------------
     path('payment_received',views.payment_received,name='payment_received'),
     path('generate_pdf/', views.generate_pdf, name='generate_pdf'),
-    path('get_date/', views.get_date, name='get_date'),
     path('payment_reciedved_customize',views.payment_reciedved_customize,name='payment_reciedved_customize'),
     path('payment_reciedved_customize_sub/<str:new_id>',views.payment_reciedved_customize_sub,name='payment_reciedved_customize_sub'),
-    # path('advanced_filters',views.advanced_filters,name='advanced_filters'),
     path('select_comparator/<str:new_id>',views.select_comparator,name='select_comparator'),
     path('add_note_or_date/<str:selected_option>/<str:new_id>',views.add_note_or_date,name='add_note_or_date'),
     path('empty_filter',views.empty_filter,name='empty_filter'),
     path('payment_reciedved_customize_show',views.payment_reciedved_customize_show,name='payment_reciedved_customize_show'),
-    # path('my_calendar',request_view,name='my_calendar'),
     path('my_calendar',views.my_calendar,name='my_calendar'),
     path('tax_summary_page',views.tax_summary_page,name='tax_summary_page'),
     path('generate_pdf1/', views.generate_pdf1, name='generate_pdf1'),
     path('tax_summary_customize_general/', views.tax_summary_customize_general, name='tax_summary_customize_general'),
+    path('set_custom_date', views.set_custom_date, name='set_custom_date'),
     #-----------------------------Ashikh V U payment_received(start)-------------------------
     
     

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'schedule',
     'silk',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
