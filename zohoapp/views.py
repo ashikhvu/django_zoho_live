@@ -15507,9 +15507,12 @@ def customize_report_bss3(request):
 @login_required(login_url='login')
 def payment_received(request):
     todays_date = date.today().strftime('%d  %B  %Y')
+    company_detail = company_details.objects.get(id=request.user.id)
+    print(company_detail.company_name)
     customer_details = customer.objects.all()
     return render(request,'payment_reciedved.html',{'todays_date':todays_date,
-                                                    'customer':customer_details})
+                                                    'customer':customer_details,
+                                                    'company_detail':company_detail})
 
 
 @login_required(login_url='login')

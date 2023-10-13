@@ -35,7 +35,7 @@
         box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.404);
     }
     .customize_btn{
-        color: rgb(135, 135, 255);
+        color: rgb(59, 59, 255);
         cursor: pointer;
         transition: all 0.1s linear;    
     }
@@ -92,6 +92,17 @@
             page-break-inside: auto;
         }
     }
+    .d-flexx{
+        display: flex;
+        justify-content: end;
+    }
+    @media (max-width:1200px)
+    {
+        .d-flexx{
+            display: inherit;
+            justify-content: inherit;
+        }
+    }
 </style>
 
 <div class="position-relative">
@@ -100,26 +111,29 @@
     </div>
 </div>
 
-<div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.055);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);backdrop-filter: blur(10px);">
-    <p></p>
-    <div class="position-relative cls-btn">
+<!-- <div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.055);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);backdrop-filter: blur(10px);"> -->
+    <div>
+    <!-- <p></p> -->
+    <!-- <div class="position-relative cls-btn">
         <div style="margin-bottom: -1rem;margin-right: -0.95rem;" class="position-absolute end-0 bottom-100">
             <div class="col-sm-12 col-xl-1">
                 <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
             </div>
         </div>
-    </div>
+    </div> -->
     <p></p>
-    <div class="row visiblity_hide">
+    <div style="background-color: black;" class="row visiblity_hide p-2 border border-light">
         <div class="col-sm-12 col-xl-3 ">
             <div class="position-relative">
                 <div class="position-absolute start-0 top-0" style="margin-top: 0.1rem;margin-left: 0.5rem;">
-                    <span class="bi bi-calendar2-date text-dark" ></span>
+                    <span class="fa fa-calendar text-light" ></span>
                 </div>
             </div>
             <!-- Date range calendar input -->
-            <div id="reportrange" style="cursor: pointer; color: #010101; background-color: #fff;height: 30px; padding: 2px; border-radius: 2px;">
-                <span></span> <i class="fa fa-caret-down"></i>
+            <div id="reportrange" style="cursor: pointer; color: #ffffff; background-color: rgb(0, 0, 0);height: 30px; padding: 2px; border-radius: 2px;">
+                <div style="display: flex;justify-content: space-between;">
+                    <span>Today</span> <i class="fa fa-caret-down pe-1"></i>
+                </div>
             </div>
             <style>
                 .daterangepicker{
@@ -141,7 +155,7 @@
                     var end = moment();
 
                     function cb(start, end) {
-                        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                        $('#reportrange span').html(start.format('DD MMM YY') + ' - ' + end.format('DD MMM YY'));
                         $('#selectedDate').html('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'));
                         $('#selectedDate_input').val('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'))
                         localStorage.setItem('selectedDates', JSON.stringify({ start: start, end: end }));
@@ -208,34 +222,37 @@
                 <option value="Custom"><a type="button" onclick="alert_fn()">Custom</a></option>
             </select> -->
         </div>
-        <div class="col-sm-12 col-xl-2 p-1 ">
+        <div class="col-sm-12 col-xl-3 p-1  border border-light">
             <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> <a href="{% url 'payment_reciedved_customize' %}" class="customize_btn text-decoration-none ts_sm_sm_blue">Customize Report</a></span>
         </div>
-        <div class="col-sm-12 col-xl-3 ">
+        <div class="col-sm-12 col-xl-2  border border-light">
             
         </div>
-        <div class="col-sm-12 col-xl-2 ">
+        <!-- <div class="col-sm-12 col-xl-2 ">
             <button class="btn btn-outline-primary bg-gradient p-2 bs_sm sched_btn"><span class="bi bi-clock sched_btn"></span> Scheduled Report</button>
-        </div>
-        <div class="col-sm-12 col-xl-1">
+        </div> -->
+        <div class="col-sm-12 col-xl-1  border border-light">
             <div class="d-flex">
                 <button id="print_btn" class="btn btn-outline-light ps-3 pe-3 pt-2 pb-2 bs_sm"><span class="bi bi-printer"></span> </button>
                 <button class="dropdown-toggle btn btn-outline-light  p-2 bs_sm"></button>
             </div>
         </div>
-        <div class="col-sm-12 col-xl-1 ">
+        <div class="col-sm-12 col-xl-2 d-flexx  border border-light">
             <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm" data-bs-toggle="dropdown">Export As</button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'generate_pdf' %}">Export to pdf</a></li>
                 <li><a class="dropdown-item" type="button" onclick="exportToExcel()">Export to Excell</a></li>
             </ul>
         </div>
+        <div class="col-sm-12 col-xl-1  border border-light">
+            <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
+        </div>
     </div>
     <hr>
     <div id="printable_content">
         <br>
         <div class="text-center">
-            <h3 class="fw-light ts_sm print_text">ZOHO BOOKS</h4>
+            <h3 class="fw-light ts_sm print_text">{{ company_detail.company_name|upper }}</h4>
             <h2 class="fw- ts_sm">Payments Received</h1>
             <!-- <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5> -->
             <div class="ts_sm_sm" id="selectedDate"></div>
