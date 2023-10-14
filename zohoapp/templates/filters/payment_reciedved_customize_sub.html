@@ -1,12 +1,12 @@
-<div class="position-relative">
+<!-- <div class="position-relative">
     <div style="margin-top: 2.6rem;" class="position-absolute end-0 top-0">
-        <h4 style="color: rgb(43, 76, 226);" class="bi bi-dash-circle ts_sm_sm"
+        <h4 style="color: rgb(226, 43, 43);" class="bi bi-dash-circle ts_sm_sm"
         hx-get="{% url 'empty_filter' %}"
         hx-target="#payment_reciedved_customize_sub_target{{ new_id }}"
         hx-trigger="click"
         ></h4>
     </div>
-</div>
+</div> -->
 <div class="row">
     <div class="col-sm-12 col-xl-3">
         <p></p>
@@ -45,6 +45,15 @@
 
     <div class="col-sm-12 col-xl-3">
         <div id="add_note_or_date_target{{ new_id }}"></div>
+    </div>
+    <div class="col-sm-12 col-xl-1">
+        <div style="margin-top: 2.6rem;" class="">
+            <h4 style="color: rgb(226, 43, 43);" class="bi bi-dash-circle ts_sm_sm"
+            hx-get="{% url 'empty_filter' %}"
+            hx-target="#payment_reciedved_customize_sub_target{{ new_id }}"
+            hx-trigger="click"
+            ></h4>
+        </div>
     </div>
 </div>
 

@@ -56,14 +56,19 @@
     .sched_btn:hover{
         text-shadow: inherit;
     }
+    .table th{
+        background-color: black;
+        color: blue;
+    }
     @media print{
         table{
             page-break-after: always;
             page-break-before: always;
+            color: black;
         }
         table { page-break-after:auto }
-        tr    { page-break-inside:avoid; page-break-after:auto }
-        td    { page-break-inside:avoid; page-break-after:auto }
+        tr    { page-break-inside:avoid; page-break-after:auto; color: black; }
+        td    { page-break-inside:avoid; page-break-after:auto;color: black;  }
         thead { display:table-header-group }
         tfoot { display:table-footer-group }
         body,html{
@@ -94,11 +99,15 @@
     }
     .d-flexx{
         display: flex;
-        justify-content: end;
+        justify-content: center ;
+    }
+    .d-flexx1{
+        display: flex;
+        justify-content: end ;
     }
     @media (max-width:1200px)
     {
-        .d-flexx{
+        .d-flexx,.d-flexx1{
             display: inherit;
             justify-content: inherit;
         }
@@ -110,20 +119,19 @@
         <div id="my_calendar_target"></div>
     </div>
 </div>
-
 <!-- <div class="p-3 card bs_bg" style="background-color:rgba(255, 255, 255, 0.055);border-radius:5px;border: 1px solid rgba(255, 255, 255, 0.315);backdrop-filter: blur(10px);"> -->
     <div>
     <!-- <p></p> -->
-    <!-- <div class="position-relative cls-btn">
-        <div style="margin-bottom: -1rem;margin-right: -0.95rem;" class="position-absolute end-0 bottom-100">
+    <div class="position-relative cls-btn">
+        <div style="margin-bottom: -2.8rem;margin-right: 0.5rem;" class="position-absolute end-0 bottom-100">
             <div class="col-sm-12 col-xl-1">
-                <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
+                <!-- <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a> -->
+                <a id="cls-btn1" href="{% url 'report_inventory_view' %}" class="btn btn-dark m-1 border border-light"><span class="fa fa-times-circle text-light"></span></a>
             </div>
         </div>
-    </div> -->
-    <p></p>
-    <div style="background-color: black;" class="row visiblity_hide p-2 border border-light">
-        <div class="col-sm-12 col-xl-3 ">
+    </div>
+    <div style="background-color: black;" class="row visiblity_hide p-1 ">
+        <div class="col-sm-12 col-xl-3  p-1 ">
             <div class="position-relative">
                 <div class="position-absolute start-0 top-0" style="margin-top: 0.1rem;margin-left: 0.5rem;">
                     <span class="fa fa-calendar text-light" ></span>
@@ -131,9 +139,9 @@
             </div>
             <!-- Date range calendar input -->
             <div id="reportrange" style="cursor: pointer; color: #ffffff; background-color: rgb(0, 0, 0);height: 30px; padding: 2px; border-radius: 2px;">
-                <div style="display: flex;justify-content: space-between;">
+                <!-- <div style="display: flex;justify-content: space-between;"> -->
                     <span>Today</span> <i class="fa fa-caret-down pe-1"></i>
-                </div>
+                <!-- </div> -->
             </div>
             <style>
                 .daterangepicker{
@@ -157,7 +165,8 @@
                     function cb(start, end) {
                         $('#reportrange span').html(start.format('DD MMM YY') + ' - ' + end.format('DD MMM YY'));
                         $('#selectedDate').html('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'));
-                        $('#selectedDate_input').val('From ' + start.format('MMMM D, YYYY') + ' To ' + end.format('MMMM D, YYYY'))
+                        $('#selectedDate_input1').val(start.format('MM/D/YYYY'))
+                        $('#selectedDate_input2').val(end.format('MM/D/YYYY'))
                         localStorage.setItem('selectedDates', JSON.stringify({ start: start, end: end }));
                     }
 
@@ -222,73 +231,80 @@
                 <option value="Custom"><a type="button" onclick="alert_fn()">Custom</a></option>
             </select> -->
         </div>
-        <div class="col-sm-12 col-xl-3 p-1  border border-light">
-            <span class="bi bi-gear-fill ts_sm_sm_blue customize_btn"> <a href="{% url 'payment_reciedved_customize' %}" class="customize_btn text-decoration-none ts_sm_sm_blue">Customize Report</a></span>
+        <div class="col-sm-12 col-xl-3 p-1   customize_btn pt-2">
+            <a href="{% url 'payment_reciedved_customize' %}" class=" text-decoration-none customize_btn ts_sm_sm_blue"><span class="bi bi-gear-fill  "> Customize Report</span></a>
         </div>
-        <div class="col-sm-12 col-xl-2  border border-light">
+        <div class="col-sm-12 col-xl-1  p-1 ">
             
         </div>
         <!-- <div class="col-sm-12 col-xl-2 ">
             <button class="btn btn-outline-primary bg-gradient p-2 bs_sm sched_btn"><span class="bi bi-clock sched_btn"></span> Scheduled Report</button>
         </div> -->
-        <div class="col-sm-12 col-xl-1  border border-light">
-            <div class="d-flex">
-                <button id="print_btn" class="btn btn-outline-light ps-3 pe-3 pt-2 pb-2 bs_sm"><span class="bi bi-printer"></span> </button>
-                <button class="dropdown-toggle btn btn-outline-light  p-2 bs_sm"></button>
-            </div>
-        </div>
-        <div class="col-sm-12 col-xl-2 d-flexx  border border-light">
-            <button class="btn btn-outline-light p-2 dropdown-toggle bs_sm" data-bs-toggle="dropdown">Export As</button>
+        <div class="col-sm-12 col-xl-4  p-1 ">
+            <!-- <div class="d-flexssss"> -->
+                <button id="print_btn" class="btn btn-outline-light bs_sm m-1"><span class="bi bi-printer"></span> Print</button>
+                <!-- <button class="dropdown-toggle btn btn-outline-light  p- bs_sm"></button> -->
+            <!-- </div> -->
+        <!-- </div>
+        <div class="col-sm-12 col-xl-2 d-flexx1 p-1 "> -->
+            <!-- <div class="d-flexsss"> -->
+                <a class="btn btn-outline-light bs_sm m-1" onclick="generate_pdf()"><span class="bi bi-file-earmark-pdf"></span> PDF</a>
+            <!-- </div> -->
+        <!-- </div>
+        <div class="col-sm-12 col-xl-2 d-flexx  p-1 "> -->
+            <!-- <button class="btn btn-outline-light dropdown-toggle bs_sm" data-bs-toggle="dropdown">XLS(Excel)</button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'generate_pdf' %}">Export to pdf</a></li>
+                <li><a class="dropdown-item" href="generate_pdf">Export to pdf</a></li>
                 <li><a class="dropdown-item" type="button" onclick="exportToExcel()">Export to Excell</a></li>
-            </ul>
+            </ul> -->
+            <button class="btn btn-outline-light bs_sm ms-1" type="button" onclick="exportToExcel()"><span class="bi bi-table"></span> XLS(Excel)</button>
         </div>
-        <div class="col-sm-12 col-xl-1  border border-light">
-            <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a>
+        <div class="col-sm-12 col-xl-1  p-1 ">
+            <!-- <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a> -->
         </div>
     </div>
     <hr>
     <div id="printable_content">
         <br>
         <div class="text-center">
-            <h3 class="fw-light ts_sm print_text">{{ company_detail.company_name|upper }}</h4>
+            <h3 class="fw-light ts_sm print_text">{{ company.company_name|upper }}</h4>
             <h2 class="fw- ts_sm">Payments Received</h1>
             <!-- <h5 class="ts_sm_sm pt-1">( {{ todays_date }} - {{ todays_date }} )</h5> -->
             <div class="ts_sm_sm" id="selectedDate"></div>
-            <input id="selectedDate_input" style="opacity: 0;width: 0;height: 0;margin: 0;padding: 0;" class="" type="text" value="asdasdasd" name="selectedDate_input_">
+            <input id="selectedDate_input1" style="opacity: 0;width: 0;height: 0;margin: 0;padding: 0;" class="" type="text" value="asdasdasd" name="selectedDate_input_">
+            <input id="selectedDate_input2" style="opacity: 0;width: 0;height: 0;margin: 0;padding: 0;" class="" type="text" value="asdasdasd" name="selectedDate_input_">
         </div>
     <br>
         <div class="over" style="overflow: hidden;">
             <div class="over" style="overflow-x: scroll;">
-                <table style="width:100%" class="table table-striped table-hover table-dark">
+                <table style="width:100%;background-color: transparent;" class="table table-hover table- text-light">
                     <thead>
-                        <th id="paynum_" class="text-light fw-bold print__text">PAYMENT NUMBER</th>
-                        <th id="name_" class="text-light fw-bold print__text">CUSTOMER NAME</th>
-                        <th id="date_" class="text-light fw-bold print__text">DATE</th>
-                        <th id="refnum_" class="text-light fw-bold print__text">REFERENCE NUMBER</th>
-                        <th id="paymod_" class="text-light fw-bold print__text">PAYMENT MODE</th>
-                        <th id="note_" class="text-light fw-bold print__text">NOTES</th>
-                        <th id="invc_" class="text-light fw-bold print__text">INVOICE#</th>
-                        <th id="fcy_" class="text-light fw-bold print__text">AMOUNT (FCY)</th>
-                        <th id="ufcy_" class="text-light fw-bold print__text">UNUSED AMOUNT (FCY)</th>
-                        <th id="bcy_" class="text-light fw-bold print__text">AMOUNT (BCY)</th>
-                        <th id="ubcy_" class="text-light fw-bold print__text">UNUSED AMOUNT (BCY)</th> 
+                        <th id="paynum_" class="text- fw-bold print__text">PAYMENT NUMBER</th>
+                        <th id="name_" class="text- fw-bold print__text">CUSTOMER NAME</th>
+                        <th id="date_" class="text- fw-bold print__text">DATE</th>
+                        <th id="refnum_" class="text- fw-bold print__text">REFERENCE NUMBER</th>
+                        <th id="paymod_" class="text- fw-bold print__text">PAYMENT MODE</th>
+                        <th id="note_" class="text- fw-bold print__text">NOTES</th>
+                        <th id="invc_" class="text- fw-bold print__text">INVOICE#</th>
+                        <th id="fcy_" class="text- fw-bold print__text">AMOUNT (FCY)</th>
+                        <th id="ufcy_" class="text- fw-bold print__text">UNUSED AMOUNT (FCY)</th>
+                        <th id="bcy_" class="text- fw-bold print__text">AMOUNT (BCY)</th>
+                        <th id="ubcy_" class="text- fw-bold print__text">UNUSED AMOUNT (BCY)</th> 
                     </thead>
                     <tbody>
                         {% for i in customer %}
                             <tr>
-                                <td>---------</td>
-                                <td>{{ i.user.first_name|upper }} {{ i.user.last_name|upper }}</td>
-                                <td>-----</td>
-                                <td>---------</td>
-                                <td>---------</td>
-                                <td>------</td>
-                                <td>--------</td>
-                                <td>----</td>
-                                <td>------</td>
-                                <td>----</td>
-                                <td>------</td>
+                                <td class="text-light">---------</td>
+                                <td class="text-light">{{ i.customerName|upper }}</td>
+                                <td class="text-light">-----</td>
+                                <td class="text-light">---------</td>
+                                <td class="text-light">---------</td>
+                                <td class="text-light">------</td>
+                                <td class="text-light">--------</td>
+                                <td class="text-light">----</td>
+                                <td class="text-light">------</td>
+                                <td class="text-light">----</td>
+                                <td class="text-light">------</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -299,8 +315,25 @@
 </div>
 
 <script>
-    function alert_fn(){
-        alert('graaaaaaaaaaaaaaaaaaaa.........')
+    // $(document).ready(function(){
+    //     $('#cls-btn1').mouseenter(function(){
+    //         $(this).removeclass('text-dark')
+    //         $(this).addclass('text-light')
+    //     })
+    //     $('#cls-btn1').mouseleave(function(){
+    //         $(this).removeclass('text-light')
+    //         $(this).addclass('text-dark')
+    //     })
+    // })
+    function generate_pdf(){
+        string_date=$('#selectedDate').text()
+        start_d = $('#selectedDate_input1').val()
+        end_d = $('#selectedDate_input2').val() 
+        // alert(end_d)
+        url = "{% url 'generate_pdf' 0 1 2 %}".replace(0,string_date)
+        // url = "{% url 'generate_pdf' 0 1 2 %}".replace(1,start_d)
+        // url = "{% url 'generate_pdf' 0 1 2 %}".replace(2,end_d)
+        window.location.href=url
     }
     $(document).ready(function(){
         $('#print_btn').click(function(){
@@ -322,6 +355,7 @@
             $('.table').addClass('table-bordered border-dark bg-light')
             $('.print__text').removeClass('text-light')
             $('.print__text').addClass('text-dark')
+            $('table td').addClass('text-dark')
             var pc = $('#printable_content').html()
             var backup = document.body.innerHTML
             document.body.innerHTML = pc

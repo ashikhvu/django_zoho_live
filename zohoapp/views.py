@@ -42,7 +42,7 @@ from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
 from django.template.response import TemplateResponse
 import calendar
 from calendar import HTMLCalendar
-from schedule.models import Calendar
+from django.template import loader
 #___________________________Ashikh V U (end)__________________________________
 
 
@@ -15507,12 +15507,11 @@ def customize_report_bss3(request):
 @login_required(login_url='login')
 def payment_received(request):
     todays_date = date.today().strftime('%d  %B  %Y')
-    company_detail = company_details.objects.get(id=request.user.id)
-    print(company_detail.company_name)
-    customer_details = customer.objects.all()
+    company = company_details.objects.get(id=request.user.id)
+    customer_details = customer.objects.filter(user=request.user.id)
     return render(request,'payment_reciedved.html',{'todays_date':todays_date,
                                                     'customer':customer_details,
-                                                    'company_detail':company_detail})
+                                                    'company':company})
 
 
 @login_required(login_url='login')
@@ -15572,12 +15571,18 @@ def payment_reciedved_customize_show(request):
 
 @login_required(login_url='login')
 def tax_summary_page(request):
-    return render(request,'tax_summary_page.html')
+    company = company_details.objects.get(id=request.user.id)
+    customer_details = customer.objects.filter(user=request.user.id)
+    return render(request,'tax_summary_page.html',{'company':company,
+                                                    'customer_details':customer_details,
+                                                        })
 
 @login_required(login_url='login')
-def generate_pdf(request):
+def generate_pdf(request,string_date,start_d,end_d):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
+
+    print(f'start date : {start_d}  end date : {end_d}')
 
     buffer = BytesIO()
     # p = canvas.Canvas(buffer,pagesize=A4)
@@ -15585,8 +15590,8 @@ def generate_pdf(request):
     doc = SimpleDocTemplate(response, pagesize=letter)
     elements = []
 
-    customers = customer.objects.all()
-    d = datetime.now().date().strftime('%B %d %Y')
+    customers = customer.objects.filter(user=request.user.id)
+    d = string_date
 
     data = [["PAY-NUM", "FULL NAME", "DATE","REF-NUM","PAY-MOD","NOTE","INVOICE","FCY","U-FCY","BCY","U-BCY"]]
 
@@ -15611,7 +15616,8 @@ def generate_pdf(request):
         fontSize=15,
         fontName='Helvetica',
     )
-    heading3 = Paragraph("Zoho Books", heading_style3)
+    company = company_details.objects.get(id=request.user.id)
+    heading3 = Paragraph(company.company_name, heading_style3)
     heading = Paragraph("Payment Received", heading_style)
     heading1 = Paragraph(f"{d}", heading_style1)
     elements.append(heading3)
@@ -15619,7 +15625,7 @@ def generate_pdf(request):
     elements.append(heading1)
 
     for i in customers:
-        data.append(["---------",i.user.first_name +" "+ i.user.last_name,"-----","---------","---------","------","--------","----","------","----","------"])
+        data.append(["---------",i.customerName,"-----","---------","---------","------","--------","----","------","----","------"])
 
     table = Table(data)
 
@@ -15627,6 +15633,7 @@ def generate_pdf(request):
         ('BACKGROUND', (0, 0), (0, 0), colors.white),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('ALIGN',(0,1),(-1,-1 ),'LEFT'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('BACKGROUND', (0, 1), (-1, -1), colors.white),
@@ -15643,7 +15650,7 @@ def generate_pdf(request):
 
 
 @login_required(login_url='login')
-def generate_pdf1(request):
+def generate_pdf1(request,string_date,start_d,end_d):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
 
@@ -15654,7 +15661,8 @@ def generate_pdf1(request):
     elements = []
 
     customers = customer.objects.all()
-    d = datetime.now().date().strftime('%B %d %Y')
+    # d = datetime.now().date().strftime('%B %d %Y')
+    d = string_date
 
     data = [["TAX NAME", "TAX PERCENTAGE %", "TAXABLE AMOUNT","TAXAMOUNT"]]
 
@@ -15686,7 +15694,8 @@ def generate_pdf1(request):
         fontSize=8,
         fontName='Helvetica',
     )
-    heading3 = Paragraph("Zoho Books", heading_style3)
+    company = company_details.objects.get(id=request.user.id)
+    heading3 = Paragraph(company.company_name, heading_style3)
     heading = Paragraph("Tax Summary", heading_style)
     heading4 = Paragraph("Basic : Accural", heading_style4)
     heading1 = Paragraph(f"( {d} )", heading_style1)
