@@ -15531,7 +15531,8 @@ def set_custom_date(request):
 
 @login_required(login_url='login')
 def payment_reciedved_customize(request):
-    return render(request,'payment_reciedved_customize.html')
+    company = company_details.objects.get(id=request.user.id)
+    return render(request,'payment_reciedved_customize.html',{'company':company})
 
 
 @login_required(login_url='login')
@@ -15566,7 +15567,8 @@ def empty_filter(request):
 
 @login_required(login_url='login')
 def payment_reciedved_customize_show(request):
-    return render(request,'payment_reciedved_customize_show.html')
+    company = company_details.objects.get(id=request.user.id)
+    return render(request,'payment_reciedved_customize_show.html',{'company':company})
 
 
 @login_required(login_url='login')
@@ -15579,15 +15581,15 @@ def tax_summary_page(request):
 
 @login_required(login_url='login')
 def generate_pdf(request,string_date,start_d,end_d):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
-
     print(f'start date : {start_d}  end date : {end_d}')
 
     buffer = BytesIO()
     # p = canvas.Canvas(buffer,pagesize=A4)
+    pdf_filename = "sample.pdf"
+    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
 
-    doc = SimpleDocTemplate(response, pagesize=letter)
+
+    # doc = SimpleDocTemplate(response, pagesize=letter)
     elements = []
 
     customers = customer.objects.filter(user=request.user.id)
@@ -15645,19 +15647,23 @@ def generate_pdf(request,string_date,start_d,end_d):
     doc.build(elements)
     pdf = buffer.getvalue()
     buffer.close()
-    response.write(pdf)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+    # response.write(pdf)
+    with open(pdf_filename, 'rb') as pdf_file:
+        response.write(pdf_file.read())
     return response 
 
 
 @login_required(login_url='login')
 def generate_pdf1(request,string_date,start_d,end_d):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="mypdf.pdf"'
 
     buffer = BytesIO()
     # p = canvas.Canvas(buffer,pagesize=A4)
+    pdf_filename = "sample.pdf"
+    doc = SimpleDocTemplate(pdf_filename, pagesize=letter)
 
-    doc = SimpleDocTemplate(response, pagesize=letter)
+    # doc = SimpleDocTemplate(response, pagesize=letter)
     elements = []
 
     customers = customer.objects.all()
@@ -15724,11 +15730,16 @@ def generate_pdf1(request,string_date,start_d,end_d):
     doc.build(elements)
     pdf = buffer.getvalue()
     buffer.close()
-    response.write(pdf)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+    # response.write(pdf)
+    with open(pdf_filename, 'rb') as pdf_file:
+        response.write(pdf_file.read())
     return response 
 
 @login_required(login_url='login')
 def tax_summary_customize_general(request):
-    return render(request,'tax_summary_customize_general.html')
+    company = company_details.objects.get(id=request.user.id)
+    return render(request,'tax_summary_customize_general.html',{'company':company})
 
 #___________________________Ashikh V U (end)__________________________________

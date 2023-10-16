@@ -105,11 +105,17 @@
         display: flex;
         justify-content: end ;
     }
+    .custom_nav_margin{
+        margin-right: 3.2rem;
+    }
     @media (max-width:1200px)
     {
         .d-flexx,.d-flexx1{
             display: inherit;
             justify-content: inherit;
+        }
+        .custom_nav_margin{
+            margin-right: inherit;
         }
     }
 </style>
@@ -123,7 +129,7 @@
     <div>
     <!-- <p></p> -->
     <div class="position-relative cls-btn">
-        <div style="margin-bottom: -2.8rem;margin-right: 0.5rem;" class="position-absolute end-0 bottom-100">
+        <div style="margin-bottom: -2.9rem;margin-right: -0.5rem;" class="position-absolute end-0 bottom-100">
             <div class="col-sm-12 col-xl-1">
                 <!-- <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a> -->
                 <a id="cls-btn1" href="{% url 'report_inventory_view' %}" class="btn btn-dark m-1 border border-light"><span class="fa fa-times-circle text-light"></span></a>
@@ -240,7 +246,7 @@
         <!-- <div class="col-sm-12 col-xl-2 ">
             <button class="btn btn-outline-primary bg-gradient p-2 bs_sm sched_btn"><span class="bi bi-clock sched_btn"></span> Scheduled Report</button>
         </div> -->
-        <div class="col-sm-12 col-xl-4  p-1 ">
+        <div class="col-sm-12 col-xl-5  p-1 d-flex justify-content-end">
             <!-- <div class="d-flexssss"> -->
                 <button id="print_btn" class="btn btn-outline-light bs_sm m-1"><span class="bi bi-printer"></span> Print</button>
                 <!-- <button class="dropdown-toggle btn btn-outline-light  p- bs_sm"></button> -->
@@ -257,11 +263,11 @@
                 <li><a class="dropdown-item" href="generate_pdf">Export to pdf</a></li>
                 <li><a class="dropdown-item" type="button" onclick="exportToExcel()">Export to Excell</a></li>
             </ul> -->
-            <button class="btn btn-outline-light bs_sm ms-1" type="button" onclick="exportToExcel()"><span class="bi bi-table"></span> XLS(Excel)</button>
+            <button class="btn btn-outline-light bs_sm ms-1 mt-1 mb-1 custom_nav_margin" type="button" onclick="exportToExcel()"><span class="bi bi-table"></span> XLS(Excel)</button>
         </div>
-        <div class="col-sm-12 col-xl-1  p-1 ">
+        <!-- <div class="col-sm-12 col-xl-1  p-1 "> -->
             <!-- <a href="{% url 'report_inventory_view' %}"><h1 class="bi bi-x ts_sm_sm text_hover1"></h1></a> -->
-        </div>
+        <!-- </div> -->
     </div>
     <hr>
     <div id="printable_content">

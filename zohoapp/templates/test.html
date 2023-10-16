@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoho</title>
+    <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="{% static 'assets/vendors/js/vendor.bundle.base.js'%}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css" rel="stylesheet" />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+</head>
+<body>
+    
+
+
+
+
+<div style="border: 1px solid black;">
+    <ul id="list1">
+        <li>name1</li>
+        <li>name2</li>
+        <li>name3</li>
+        <li>name4</li>
+        <li>name5</li>
+        <li>name6</li>
+        <li>name7</li>
+        <li hidden>name8</li>
+        <li hidden>name9</li>
+        <li hidden>name10</li>
+        <li hidden>name11</li>
+    </ul>
+</div>
+<p></p>
+<div style="border: 1px solid black;">
+    <ul id="list2">
+        <li hidden>name1</li>
+        <li hidden>name2</li>
+        <li hidden>name3</li>
+        <li hidden>name4</li>
+        <li hidden>name5</li>
+        <li hidden>name6</li>
+        <li hidden>name7</li>
+        <li hidden>name8</li>
+        <li hidden>name9</li>
+        <li hidden>name10</li>
+        <li hidden>name11</li>
+    </ul>
+</div>
+
+<div style="text-align:center">
+    <h2 style="font-size: 60px;" id="sub_text">-------</h2>
+    <input  id="inin" style="margin: 20px;border: 2px solid black;padding: 20px;font-size: 50px;" type="text">
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#inin').on('input',function(){
+            $('#sub_text').text($(this).val())
+        })
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

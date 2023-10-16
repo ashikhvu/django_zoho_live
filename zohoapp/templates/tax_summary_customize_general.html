@@ -350,10 +350,10 @@
         <div style="border-right: 0.5px solid rgba(255, 255, 255, 0);" class="col-sm-12 col-xl-2 p-1 ">
             <a class="ms-3 box_ ts_sm_sm" style="color: white;" href=""><h4 class="ps-4">General</h14></a><p></p>
         </div>  
-        <div class="col-sm-12 col-xl-1">
+        <!-- <div class="col-sm-12 col-xl-1">
            
-        </div>
-        <div class="col-sm-12 col-xl-8 ">
+        </div> -->
+        <div class="col-sm-12 col-xl-10 ">
             <div class="row">
                 <div class="col-sm-12 col-xl-3">
                     <p></p>
@@ -470,33 +470,124 @@
                 <div class="col-sm-12 col-xl-3">
                     <p></p>
                     <h6 class="pb-1 mb-0">Report Basis</h6>
-                    <div class="dropdown">
-                        <button  class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4 pt-2 pb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Dropdown button
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                              <a class="dropdown-item pt-3" href="#">Accural
-                                <p>Based on invoice date</p>
-                              </a>
-                              
-                            </li>
-                            <li>
-                                <a class="dropdown-item pt-3" href="#">Cash
-                                  <p>Based on Payment receipt</p>
-                                </a>
-                                
-                              </li>
-                        </ul>
-                      </div>
+                
+<style>
+    .custom-dropdown {
+    position: relative;
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+}
+
+.selected-option {
+    padding: 10px;
+    background-color: #00000000;
+    border: 1px solid #ccc;
+    border-radius: 5px;;
+}
+
+.dropdown-options {
+    position: absolute;
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(23, 23, 23);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 5px;
+    color: rgb(255, 255, 255)
+}
+
+.dropdown-options li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-options li:hover {
+    background-color: #027584d3;
+    color: white;
+}
+
+</style>
+
+
+<div class="custom-dropdown w-100">
+    <div class="selected-option">Select an option</div>
+    <ul class="dropdown-options" style="width: 100%;">
+        <li class="fw-bold" data-value="option1">Accuracy
+            <p class="pt-1">Based on invoice date</p>
+        </li>
+        <li class="fw-bold" data-value="option1">Cash
+            <p class="pt-1">Based on payment receipt</p>
+        </li>
+    </ul>
+</div>
+<p id="sub_text" class="p-1"></p>
+
+
+
+
+<script>
+    $(document).ready(function() {
+    const dropdown = $('.custom-dropdown');
+    const selectedOption = $('.selected-option', dropdown);
+    const optionsList = $('.dropdown-options', dropdown);
+
+    dropdown.click(function() {
+        optionsList.toggle();
+    });
+
+    optionsList.on('click', 'li', function() {
+        const selectedValue = $(this).data('value');
+        selectedOption.text($(this).text().replace($(this).children('p').text(),''));
+        $('#sub_text').text($(this).children('p').text())
+        optionsList.hide();
+
+        // Handle the selected value as needed
+        console.log(`Selected value: ${selectedValue}`);
+        optionsList.toggle()
+    });
+
+    // Close the dropdown when clicking outside of it
+    $(document).click(function(event) {
+        if (!$(event.target).closest('.custom-dropdown').length) {
+            optionsList.hide();
+        }
+    });
+});
+
+</script>
+
+
+
+                <style>
+                    select option{
+                        background-color: rgb(35, 35, 35);
+                        color: white;
+                    }
+                    option{
+                        background-color: black;
+                    }
+                    option:hover{
+                        background: red;
+                        color: white;   
+                    }
+                    
+                </style>
+
                 </div>
                 <div  class="col-sm-12 col-xl-1"></div>
                 <div class="col-sm-12 col-xl-3">
                     <p></p>
                     <h6 class="pb-1 mb-0">Report By</h6>
-                    <div class="dropdown">
+                    <select style="background-color: transparent;border: 1px solid white;color: white;" class="form-select bg-dark" name="" id="">
+                        <option value="">All</option>
+                        <option value="">Sales</option>
+                        <option value="">Purchases</option>
+                    </select>
+                    <!-- <div class="dropdown">
                         <button  class="btn btn-outline-light w-100 text-start bs_sm bg-dark text-light ps-4 pt-2 pb-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Dropdown button
+                          Select an option
                         </button>
                         <ul class="dropdown-menu">
                           <li>
@@ -509,7 +600,7 @@
                             <a class="dropdown-item" href="#">Purchases</a>
                           </li>
                         </ul>
-                    </div>
+                    </div> -->
                     <small class="text-light fw-lighter">Journal entries will not be included.</small>
                 </div>
                 <!-- <div  class="col-sm-12 col-xl-1"></div> -->
@@ -547,6 +638,7 @@
 </div>
 
 <script>
+    
     $(document).ready(function(){
         $('#btn1').click(function(){
             $('#btn1_display').attr('hidden',true)

@@ -350,7 +350,7 @@
     </div> -->
     <div class="row visiblity_hide">
         <div style="border-right: 0.5px solid rgba(0, 0, 0, 0);" class="col-sm-12 col-xl-2 p-1 ">
-            <a class="ms-3 box_ " href="{% url 'payment_reciedved_customize' %}"><h4 class="ps-4">General</h14></a><p></p>
+            <a class="ms-3 box_ " href="{% url 'payment_reciedved_customize' %}"><h4 class="ps-3">General</h4></a><p></p>
             <a class="box_ ts_sm_sm" style="color: blue" href="{% url 'payment_reciedved_customize_show' %}"><h4 class="ps-3 ts_sm_sm">Show / Hide Columns</h4></a>
         </div>  
         <div class="col-sm-12 col-xl-1">
@@ -476,37 +476,39 @@
 
 
 <script>
-    // function search_data1()
-    // {
-    //     search_text = $('#seacrh_data1').val()
-    //     // alert(search_text)
-    //     lis = $('#search_target1').find('li');
-    //     lis.each(function(){
-    //         if(search_text==='')
-    //         {
-    //             window.location.href=''
-    //         }
-    //         if($(this).text().includes(search_text) && $(this).attr('hidden')===false)
-    //         {
-    //             // alert('asdsad')
-    //             $(this).attr('hidden',false)
-    //         }
-    //         else{
-    //             // $(this).attr('hidden',true)
-    //         }
-    //     });
-    // }
+    var all_a = $('#dropdown-menu a')
+    function filterFunction()
+    {
+        search_text = $('#myInput').val()
+        alert($('#myInput').val())
+        all_a.each(function(){
+            if($(this).text().toLocaleLowerCase().includes(search_text))
+            {
+                $(this).show()
+            }
+            else{
+                $(this).hide()
+            }
+        })
+    }   
+    var li = $('#search_target1 li:visible')
     function search_data1()
     {
-        search_text = $('#seacrh_data1').val()
-        lis = $('#search_target1').find('li');
-        lis.each(function(){
-            if($(this).text().includes(search_text) && $(this).attr('hidden')===false)
+        // var a = $('#search_target1')
+        search_text=$('#seacrh_data1').val().toLocaleLowerCase()
+        console.clear()
+        li.each(function(){
+            if ($(this).text().toLocaleLowerCase().includes(search_text))
             {
-                console.log($(this).text());
+                $(this).show()
             }
-        });
+            else{
+                $(this).hide()
+            }
+        })
+        
     }
+    
     $(document).ready(function()
     {
         $('li').mouseenter(function(){
